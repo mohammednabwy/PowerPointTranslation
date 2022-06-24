@@ -1,7 +1,7 @@
 #Libraries
 import warnings
 warnings.filterwarnings("ignore")
-from flask import Flask,send_file
+from flask import Flask,send_file,send_from_directory
 from flask import  request
 from werkzeug.utils import secure_filename
 from Service import PPTTranslationService
@@ -21,6 +21,16 @@ def allowed_file(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 #-------------------------------------------------------- 
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'favicon.ico', mimetype='image/favicon.png')
+
+@app.route('/')
+@app.route('/home')
+def home():
+    return "Welcome to Powerpoint Translator" 
+
 @app.route('/api/v1/TranslatePowerPointFile', methods=["POST"])
 def generateLOsFromFiles():    
     pptFile,source,target=None,'','' 
