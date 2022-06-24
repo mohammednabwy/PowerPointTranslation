@@ -3,7 +3,6 @@ import warnings
 warnings.filterwarnings("ignore")
 from flask import Flask,send_file
 from flask import  request
-from flask_api import status
 from werkzeug.utils import secure_filename
 from Service import PPTTranslationService
 import os
@@ -30,9 +29,9 @@ def generateLOsFromFiles():
         source=request.args.get('source') 
         target=request.args.get('target')
     except:
-         return "No file " ,status.HTTP_406_NOT_ACCEPTABLE   
+         return "No file " ,406   
     if not allowed_file(pptFile.filename): 
-        return "Not allowed file extension",status.HTTP_406_NOT_ACCEPTABLE
+        return "Not allowed file extension",406
     pptfilename = secure_filename(pptFile.filename)
     pptfilePath=os.path.join(app.config['UPLOAD_FOLDER'], pptfilename)
     pptFile.save(pptfilePath)    
