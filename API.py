@@ -33,10 +33,9 @@ def home():
 
 @app.route('/api/v1/TranslatePowerPointFile', methods=["POST"])
 def generateLOsFromFiles():    
-    pptFile,source,target=None,'','' 
+    pptFile,target=None,''
     try:        
-        pptFile = request.files['pptFile']
-        source=request.args.get('source') 
+        pptFile = request.files['pptFile']       
         target=request.args.get('target')
     except:
          return "No file " ,406   
@@ -46,7 +45,7 @@ def generateLOsFromFiles():
     pptfilePath=os.path.join(app.config['UPLOAD_FOLDER'], pptfilename)
     pptFile.save(pptfilePath)    
     print("Translating File Started..............")
-    translated_file_path=PPTTranslationService.translatePPTFile(pptfilePath,src=source,target=target)  
+    translated_file_path=PPTTranslationService.translatePPTFile(pptfilePath,target=target)  
     print("Translating File Finished")
     output_file_path=translated_file_path
     output_file_path=output_file_path.replace('\\','/')            
