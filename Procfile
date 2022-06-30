@@ -1,1 +1,1 @@
-web: gunicorn API:app --log-file -
+web: gunicorn API:app --timeout 2000 --log-file -
