@@ -37,7 +37,8 @@ def translatePPTFile(pptfilePath,target='fr'):
                             continue
            if shape.has_table:
                 for row in shape.table.rows:
-                    for cell in row.cells:                       
+                    for cell in row.cells: 
+                            if len(cell.text) < 3 : continue
                             new_text = translate(cell.text,target)
                             cell.text = new_text
     #save 
@@ -50,5 +51,5 @@ def translatePPTFile(pptfilePath,target='fr'):
 #---------------------------------------------
 def main():
     pptfilePath='Files\\DataStructureAndAlgorthimDesign_1.pptx'  
-    translatePPTFile(pptfilePath,target='ar')   
+    translatePPTFile(pptfilePath,target='en')   
     return
