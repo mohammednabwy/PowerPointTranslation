@@ -8,7 +8,7 @@ from Service import PPTTranslationService
 import os
 #--------------------------------------------------------
 #Public Variables
-UPLOAD_FOLDER = '/Files/'
+UPLOAD_FOLDER = ''
 UPLOAD_FOLDER_LOs=UPLOAD_FOLDER
 ALLOWED_EXTENSIONS = {'ppt', 'pptx'}
 FILES_URL_Download='http://127.0.0.1:5000/LOs/'
@@ -42,7 +42,8 @@ def generateLOsFromFiles():
     if not allowed_file(pptFile.filename): 
         return "Not allowed file extension",406
     pptfilename = secure_filename(pptFile.filename)
-    pptfilePath=os.path.join(app.config['UPLOAD_FOLDER'], pptfilename)
+    #pptfilePath=os.path.join(app.config['UPLOAD_FOLDER'], pptfilename)
+	pptfilePath=pptfilename
     pptFile.save(pptfilePath)    
     print("Translating File Started..............")
     translated_file_path=PPTTranslationService.translatePPTFile(pptfilePath,target=target)  
