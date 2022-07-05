@@ -8,7 +8,7 @@ from Service import PPTTranslationService
 import os
 #--------------------------------------------------------
 #Public Variables
-UPLOAD_FOLDER = 'Files/'
+UPLOAD_FOLDER = '/Files/'
 UPLOAD_FOLDER_LOs=UPLOAD_FOLDER
 ALLOWED_EXTENSIONS = {'ppt', 'pptx'}
 FILES_URL_Download='http://127.0.0.1:5000/LOs/'
