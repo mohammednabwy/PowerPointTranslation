@@ -2,11 +2,12 @@ import os
 from pptx import Presentation
 from pptx.enum.text import PP_ALIGN
 from pptx.enum.lang import MSO_LANGUAGE_ID
-from deep_translator import GoogleTranslator #https://github.com/nidhaloff/deep-translator
-#---------------------------------------------
-def translate(source_txt,target='fr'):
-   translated = GoogleTranslator(source='auto', target=target).translate(source_txt) 
-   return  translated
+from Service import Translator
+#from deep_translator import GoogleTranslator #https://github.com/nidhaloff/deep-translator
+##---------------------------------------------
+#def translate(source_txt,target='fr'):
+#   translated = GoogleTranslator(source='auto', target=target).translate(source_txt) 
+#   return  translated
 #---------------------------------------------
 def savePowerPoint(filename,presentation):
     presentation.save(filename)
@@ -27,7 +28,7 @@ def translatePPTFile(pptfilePath,target='fr'):
                         try:
                             cur_text = run.text
                             if len(cur_text) < 3 : continue
-                            new_text = translate(cur_text,target) 
+                            new_text = Translator.translate(cur_text,target) 
                             run.text = new_text 
                             if target=='ar':
                                 run.alignment = PP_ALIGN.RIGHT
@@ -39,7 +40,7 @@ def translatePPTFile(pptfilePath,target='fr'):
                 for row in shape.table.rows:
                     for cell in row.cells: 
                             if len(cell.text) < 3 : continue
-                            new_text = translate(cell.text,target)
+                            new_text = Translator.translate(cell.text,target)
                             cell.text = new_text
     #save 
     file_name=os.path.basename(pptfilePath)
