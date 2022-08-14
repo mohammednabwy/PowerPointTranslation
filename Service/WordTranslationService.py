@@ -1,25 +1,36 @@
 import os
+import docx
 from docx import Document
+from Service import Translator
 
-from deep_translator import GoogleTranslator #https://github.com/nidhaloff/deep-translator
-#---------------------------------------------
-def translate(source_txt,target='fr'):
-   translated = GoogleTranslator(source='auto', target=target).translate(source_txt) 
-   return  translated
-#---------------------------------------------
+
 def save(filename,document):
     document.save(filename)
     return
 
-def translateWordFile(wordfilePath,target='fr'): 
-    document=Document(wordfilePath)
-    for paragraph in document.paragraphs:     
+
+def translateWordFile(wordfilePath,target='ar'): 
+    document=Document(wordfilePath)   
+    for paragraph in document.paragraphs:
+        if target=='ar':
+            pPr=paragraph._p.get_or_add_pPr()
+            p_bidi= docx.oxml.shared.OxmlElement('w:bidi')
+            pPr.append(p_bidi)
+        else:
+            pPr=paragraph._p.get_or_add_pPr()
+            for child in pPr.getchildren():
+             if 'bidi' in  child.__repr__():                 
+                 pPr.remove(child)
         for run in paragraph.runs:     
             try:
                 cur_text = run.text
-                if len(cur_text) < 3 : continue
-                new_text = translate(cur_text,target) 
+                if len(cur_text) < 1 : continue
+                new_text = Translator.translate(cur_text,target) 
                 run.text = new_text 
+                if target=='ar':                               
+                    run.font.rtl = True
+                else:
+                    run.font.rtl = False
             except:
                 continue
     
@@ -28,7 +39,7 @@ def translateWordFile(wordfilePath,target='fr'):
             for row in table.rows:
                 for cell in row.cells:
                     for paragraph in cell.paragraphs:                  
-                            paragraph.text = translate(paragraph.text,target) 
+                            paragraph.text = Translator.translate(paragraph.text,target) 
         except:
                 continue
     
@@ -41,6 +52,8 @@ def translateWordFile(wordfilePath,target='fr'):
     return translated_file
 
 def main():
-    wordfilePath='Files\\test2.docx'  
-    translateWordFile(wordfilePath,target='fr')   
-    return
+    
+    
+     wordfilePath='Files\\programmin_1.docx'   
+     translateWordFile(wordfilePath,target='en')  
+     return

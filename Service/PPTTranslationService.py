@@ -3,27 +3,29 @@ from pptx import Presentation
 from pptx.enum.text import PP_ALIGN
 from pptx.enum.lang import MSO_LANGUAGE_ID
 from Service import Translator
-#from deep_translator import GoogleTranslator #https://github.com/nidhaloff/deep-translator
-##---------------------------------------------
-#def translate(source_txt,target='fr'):
-#   translated = GoogleTranslator(source='auto', target=target).translate(source_txt) 
-#   return  translated
+#import pptx
+#from docx.oxml.shared import qn
 #---------------------------------------------
 def savePowerPoint(filename,presentation):
     presentation.save(filename)
     return
 #---------------------------------------------
-def translatePPTFile(pptfilePath,target='fr'):     
+def translatePPTFile(pptfilePath,target='ar'):     
     presentation = Presentation(pptfilePath)
     for slideIndex in range(0,len(presentation.slides)): 
        print("Translating slide number : ", str(slideIndex+1))
-       slide=presentation.slides[slideIndex]          
+       slide=presentation.slides[slideIndex]  
+     
        for i in range(0,len(slide.shapes)):        
            shape=slide.shapes[i] 
-           if shape.has_text_frame:
-             
+           if shape.has_text_frame:             
                text_frame = shape.text_frame
-               for paragraph in text_frame.paragraphs:
+               for paragraph in text_frame.paragraphs:                  
+#                    if target=='ar':
+#                        pPr=paragraph._p.get_or_add_pPr()                       
+#                        ap= pptx.oxml.xmlchemy.OxmlElement('a:p')
+#                        ap.set(qn('a:pPr'),'rtl')
+#                        pPr.append(ap)
                     for run in paragraph.runs:
                         try:
                             cur_text = run.text
@@ -52,5 +54,5 @@ def translatePPTFile(pptfilePath,target='fr'):
 #---------------------------------------------
 def main():
     pptfilePath='Files\\DataStructureAndAlgorthimDesign_1.pptx'  
-    translatePPTFile(pptfilePath,target='en')   
+    translatePPTFile(pptfilePath,target='ar')   
     return
