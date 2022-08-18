@@ -1,10 +1,8 @@
 import os
 from pptx import Presentation
-from pptx.enum.text import PP_ALIGN
 from pptx.enum.lang import MSO_LANGUAGE_ID
 from Service import Translator
-#import pptx
-#from docx.oxml.shared import qn
+
 #---------------------------------------------
 def savePowerPoint(filename,presentation):
     presentation.save(filename)
@@ -21,19 +19,19 @@ def translatePPTFile(pptfilePath,target='ar'):
            if shape.has_text_frame:             
                text_frame = shape.text_frame
                for paragraph in text_frame.paragraphs:                  
-#                    if target=='ar':
-#                        pPr=paragraph._p.get_or_add_pPr()                       
-#                        ap= pptx.oxml.xmlchemy.OxmlElement('a:p')
-#                        ap.set(qn('a:pPr'),'rtl')
-#                        pPr.append(ap)
+                    if target=='ar':
+                        pPr=paragraph._p.get_or_add_pPr()                        
+                        pPr.set("rtl","1")
+                    else:
+                        pPr=paragraph._p.get_or_add_pPr()                        
+                        pPr.set("rtl","0")
                     for run in paragraph.runs:
                         try:
                             cur_text = run.text
                             if len(cur_text) < 3 : continue
                             new_text = Translator.translate(cur_text,target) 
                             run.text = new_text 
-                            if target=='ar':
-                                run.alignment = PP_ALIGN.RIGHT
+                            if target=='ar':                              
                                 run.font.language_id =MSO_LANGUAGE_ID.ARABIC
                                 
                         except:
@@ -56,3 +54,5 @@ def main():
     pptfilePath='Files\\DataStructureAndAlgorthimDesign_1.pptx'  
     translatePPTFile(pptfilePath,target='ar')   
     return
+
+
