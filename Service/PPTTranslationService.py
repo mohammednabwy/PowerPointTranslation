@@ -1,6 +1,7 @@
 import os
 from pptx import Presentation
 from pptx.enum.lang import MSO_LANGUAGE_ID
+from pptx.enum.text import PP_ALIGN
 from Service import Translator
 
 #---------------------------------------------
@@ -18,21 +19,25 @@ def translatePPTFile(pptfilePath,target='ar'):
            shape=slide.shapes[i] 
            if shape.has_text_frame:             
                text_frame = shape.text_frame
-               for paragraph in text_frame.paragraphs:                  
+               for paragraph in text_frame.paragraphs:                   
                     if target=='ar':
                         pPr=paragraph._p.get_or_add_pPr()                        
                         pPr.set("rtl","1")
+                        if paragraph.alignment==None or paragraph.alignment == PP_ALIGN.LEFT:
+                            paragraph.alignment=PP_ALIGN.RIGHT
                     else:
                         pPr=paragraph._p.get_or_add_pPr()                        
                         pPr.set("rtl","0")
-                    for run in paragraph.runs:
-                        try:
+                        if paragraph.alignment==None or paragraph.alignment == PP_ALIGN.RIGHT:
+                            paragraph.alignment=PP_ALIGN.LEFT
+                    for run in paragraph.runs:                        
+                        try:                           
                             cur_text = run.text
                             if len(cur_text) < 3 : continue
                             new_text = Translator.translate(cur_text,target) 
-                            run.text = new_text 
+                            run.text = new_text                         
                             if target=='ar':                              
-                                run.font.language_id =MSO_LANGUAGE_ID.ARABIC
+                                run.font.language_id =MSO_LANGUAGE_ID.ARABIC                            
                                 
                         except:
                             continue
@@ -51,7 +56,7 @@ def translatePPTFile(pptfilePath,target='ar'):
     return translated_file
 #---------------------------------------------
 def main():
-    pptfilePath='Files\\DataStructureAndAlgorthimDesign_1.pptx'  
+    pptfilePath='Files\\DataStructureAndAlgorthimDesign.pptx'  
     translatePPTFile(pptfilePath,target='ar')   
     return
 
