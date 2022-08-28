@@ -1,9 +1,9 @@
-from pdf2docx import Converter 
 import os
 from Service import WordTranslationService
 
 
-def convertEditablePDF2Word(pdf_file_path,out_docx_file_path): 
+def convertEditablePDF2Word(pdf_file_path,out_docx_file_path):
+  from pdf2docx import Converter 
   cv = Converter(pdf_file_path)
   cv.convert(out_docx_file_path)
   cv.close() 
