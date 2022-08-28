@@ -1,2 +1,2 @@
 web: gunicorn API:app --timeout 2000 --log-file -
-libgl1
+libgl.so.1
