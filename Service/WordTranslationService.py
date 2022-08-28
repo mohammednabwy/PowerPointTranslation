@@ -51,9 +51,7 @@ def translateWordFile(wordfilePath,target='ar'):
     save(translated_file,document)
     return translated_file
 
-def main():
-    
-    
+def main(): 
      wordfilePath='Files\\programmin_1.docx'   
      translateWordFile(wordfilePath,target='en')  
      return

@@ -4,7 +4,7 @@ warnings.filterwarnings("ignore")
 from flask import Flask,send_from_directory
 from flask import  request
 from werkzeug.utils import secure_filename
-from Service import PPTTranslationService,WordTranslationService
+from Service import PPTTranslationService,WordTranslationService,PDFTranslationService
 import os
 import json 
 #--------------------------------------------------------
@@ -59,6 +59,8 @@ def TranslatePowerPointFile():
         translated_file_path=PPTTranslationService.translatePPTFile(filePath,target=target)  
     elif file_extension in ('.doc','.docx','.rtf'): 
         translated_file_path=WordTranslationService.translateWordFile(filePath,target=target) 
+    elif file_extension == '.pdf':
+        translated_file_path=PDFTranslationService.translatePDFFile(filePath)
     print("Translating File Finished")
     output_file_path=translated_file_path
     output_file_path=output_file_path.replace('\\','/')    
